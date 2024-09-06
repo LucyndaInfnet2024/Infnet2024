@@ -1,0 +1,14 @@
+-- Carregar dados na tabela Orders (Pedidos)
+LOAD DATA INPATH '/user/lucinda_araujo/ecommerce/df_Orders.csv' OVERWRITE INTO TABLE orders;
+
+-- Carregar dados na tabela Order Items (Itens do Pedido)
+LOAD DATA INPATH '/user/lucinda_araujo/ecommerce/df_OrderItems.csv' OVERWRITE INTO TABLE order_items;
+
+-- Carregar dados na tabela Customers (Clientes)
+LOAD DATA INPATH '/user/lucinda_araujo/ecommerce/df_Customers.csv' OVERWRITE INTO TABLE customers;
+
+-- Carregar dados na tabela Payments (Pagamentos)
+LOAD DATA INPATH '/user/lucinda_araujo/ecommerce/df_Payments.csv' OVERWRITE INTO TABLE payments;
+
+-- Carregar dados na tabela Products (Produtos)
+LOAD DATA INPATH '/user/lucinda_araujo/ecommerce/df_Products.csv' OVERWRITE INTO TABLE products;

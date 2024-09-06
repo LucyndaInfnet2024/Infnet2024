@@ -1,0 +1,74 @@
+1. Qual é o valor total de vendas por estado?
+SELECT 
+    c.customer_state, 
+    SUM(oi.price + oi.shipping_charges) AS total_sales
+FROM 
+    orders o
+JOIN 
+    order_items oi ON o.order_id = oi.order_id
+JOIN 
+    customers c ON o.customer_id = c.customer_id
+GROUP BY 
+    c.customer_state
+ORDER BY 
+    total_sales DESC;
+
+2. Quais são os 10 produtos mais vendidos em termos de quantidade?
+SELECT 
+    p.product_id, 
+    p.product_category_name, 
+    COUNT(oi.order_id) AS quantity_sold
+FROM 
+    order_items oi
+JOIN 
+    products p ON oi.product_id = p.product_id
+GROUP BY 
+    p.product_id, p.product_category_name
+ORDER BY 
+    quantity_sold DESC
+LIMIT 10;
+
+3. Qual é o tempo médio entre a data de compra e a data de entrega para cada status de pedido?
+
+SELECT 
+    o.order_status, 
+    AVG(DATEDIFF(o.order_delivered_timestamp, o.order_purchase_timestamp)) AS avg_delivery_time
+FROM 
+    orders o
+WHERE 
+    o.order_delivered_timestamp IS NOT NULL
+GROUP BY 
+    o.order_status
+ORDER BY 
+    avg_delivery_time ASC;
+	
+4. Qual foi o método de pagamento mais utilizado para pedidos acima de R$ 1000,00?
+SELECT 
+    p.payment_type, 
+    COUNT(p.order_id) AS num_orders
+FROM 
+    payments p
+JOIN 
+    orders o ON p.order_id = o.order_id
+JOIN 
+    order_items oi ON o.order_id = oi.order_id
+GROUP BY 
+    p.payment_type
+HAVING 
+    SUM(oi.price + oi.shipping_charges) > 1000
+ORDER BY 
+    num_orders DESC;
+
+5. Quantos clientes únicos realizaram pedidos em cada mês do ano?
+SELECT 
+    YEAR(o.order_purchase_timestamp) AS year, 
+    MONTH(o.order_purchase_timestamp) AS month, 
+    COUNT(DISTINCT o.customer_id) AS unique_customers
+FROM 
+    orders o
+GROUP BY 
+    YEAR(o.order_purchase_timestamp), 
+    MONTH(o.order_purchase_timestamp)
+ORDER BY 
+    year, month;
+
